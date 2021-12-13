@@ -1,12 +1,12 @@
 from sys import argv, exit
 import csv
 import re
-# a list called match
+# an array called match
 match = []
 
 filename, datafile, sequence = argv
 
-# if length of argv != 4, user error.
+# if length of argv != 3, user error.
 if len(argv) != 3:
     print("Usage: python dna.py data.csv sequence.txt")
     sys.exit(1)
@@ -29,7 +29,8 @@ for i in key[0]:
     
     # if i is in the seq
     if i in seq:
-        #this formula reads regular expression and function inside regular expression to get consecutive i's in a list.(VERY POWERFUL FUNCTION)
+        #this formula reads regular expression and function inside 
+        #regular expression to get consecutive i's in a list.(VERY POWERFUL FUNCTION)
         STR_list = re.findall(rf'(?:{i})+', seq)
         #stores the largest list. 
         STR_max = max(STR_list)
