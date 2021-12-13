@@ -1,0 +1,163 @@
+First I need to open the txt file with the DNA sample that is being looked at. 
+assign that DNA file a link 
+
+
+from sys import argv, exit
+import csv
+
+filename, datafile, sequence = argv
+
+# if length of argv != 4, user error.
+if len(argv) != 3:
+    print("Usage: python dna.py data.csv sequence.txt")
+    sys.exit(1)
+
+#open DNA sequence that is being looked at.
+with open(sequence, "r") as sequence:
+    for seq in sequence:
+        seq = seq
+
+# open data_file that contains the Short Tandem Repeats(STR) that we are looking for.
+with open(datafile, "r") as datafile:
+    # read through data_file
+    reader = csv.DictReader(datafile)
+    #identify the key in reader. 
+    for row in reader:
+        key = row.keys()
+    print(key)
+        
+      
+            
+
+
+
+exit(0)
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+At this point, code is identifying the "data" within the sequence at least once... 
+The goal now is for it to recognize it every single time it appears, perhaps with a counter of sorts. 
+
+from sys import argv, exit
+import csv
+
+counter = 0 
+
+filename, datafile, sequence = argv
+
+# if length of argv != 4, user error.
+if len(argv) != 3:
+    print("Usage: python dna.py data.csv sequence.txt")
+    sys.exit(1)
+
+#open DNA sequence that is being looked at.
+with open(sequence, "r") as sequence:
+    for seq in sequence:
+        seq = seq
+
+# open data_file that contains the Short Tandem Repeats(STR) that we are looking for.
+with open(datafile, "r") as datafile:
+    # read through data_file
+    reader = csv.reader(datafile)
+    #identify the key in reader.
+    key =list(reader)
+    for i in key[0]: 
+        if i in seq:
+            print(f"{i} pass")
+    print(counter)
+----------------------------------------------------------------------------------------------------------------------------------------
+
+Each datapoint is acknowledged by how many times it shows up. 
+The goal now is to read through list, and if its values equal to STR_count at each point, there is a match, 
+
+from sys import argv, exit
+import csv
+
+# set a counter in case I need it, counter is not yet in use. If not used, delete counter. 
+counter = 0 
+
+filename, datafile, sequence = argv
+
+# if length of argv != 4, user error.
+if len(argv) != 3:
+    print("Usage: python dna.py data.csv sequence.txt")
+    sys.exit(1)
+
+#open DNA sequence that is being looked at.
+with open(sequence, "r") as sequence:
+    for seq in sequence:
+        seq = seq
+
+# open data_file that contains the Short Tandem Repeats(STR) that we are looking for.
+with open(datafile, "r") as datafile:
+    # read through data_file
+    reader = csv.reader(datafile)
+    #identify the key in reader.
+    key =list(reader)
+    for i in key[0]: 
+        if i in seq:
+            STR_count = seq.count(i)
+            print(key)
+----------------------------------------------------------------------------------------------------------------------------------------
+writing my next game plan. 
+Essentially, I am currently stuck. 
+I have a key, and I am able to iterate through the text to determine how much STR each strand of DNA has. 
+The issue that I am having is that I am going to have to create a temporary list with each STR amount. 
+    Create temporary list whith STR_amount.. append to the list. 
+Then, I am going to have to iterate through that datebase and compare it to the list, one person at a time. 
+----------------------------------------------------------------------------------------------------------------------------------------
+I thought that this code was really going to work, but there is still an issue. I've not taken int account that the STR counts ONLY if it is consecutive. 
+The code below only includes a count of the STR if the STR is present, but does not count the STR only if it is consecutive. VERY CLOSE! but no cigar. 
+
+from sys import argv, exit
+import csv
+
+# a list called match
+match = []
+#a counter (that i might not use)
+#counter = 0
+filename, datafile, sequence = argv
+
+# if length of argv != 4, user error.
+if len(argv) != 3:
+    print("Usage: python dna.py data.csv sequence.txt")
+    sys.exit(1)
+
+#open DNA sequence that is being looked at.
+with open(sequence, "r") as sequence:
+    for seq in sequence:
+        seq = seq
+
+# open data_file that contains the Short Tandem Repeats(STR) that we are looking for.
+with open(datafile, "r") as datafile:
+    # read through data_file
+    reader = csv.reader(datafile)
+    #make reader into a list and call it key.
+    key =list(reader)
+    #make a duplicate list for reference.
+
+#iterate through the first dataset in key to get headerfile, hand it the value "i"
+for i in key[0]:
+    #(Not using this) declaring the length of header file(this will help the STR_count in the future by giving it an array to store numbers in) as arr
+    #arr = len(key[0])
+    
+    # if i is in the seq
+    if i in seq:
+        #count everytime i is in seq, and give that number to STR_count at the i'th array.
+        STR_count = seq.count(i)
+        # append STR_count results to match, I added the single quotes (') because the key list is in single quotes. 
+        match.append(f'{STR_count}')
+#iterate through key with j. 
+for j in key:
+    #pop off the first element of j
+    name = j.pop(0)
+    #if the new "j" is the same as match, print name 
+    if (match == j):
+        print(name)
+        exit(0)
+print("no match")
+exit(0)
+----------------------------------------------------------------------------------------------------------------------------------------
+For STR's that are consecutive, the best thing to use is a regular expression to determine a pattern and create a list. 
+Then, I take that list of patterns and only look at the longest pattern of each STR that I am being prompted for... 
